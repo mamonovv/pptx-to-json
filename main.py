@@ -6,12 +6,16 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 
-def extract(filename, **kwargs):
+def extract(pptx_name):
     image_count = 0
-    presentation = Presentation(filename)
     all_content = {}
-
     current_slide = 0
+
+    try:
+        presentation = Presentation(pptx_name)
+    except:
+        print('Incorrect file name!')
+        exit()
 
     for slide in presentation.slides:
         slide_content = {}
@@ -36,7 +40,7 @@ def extract(filename, **kwargs):
             # EXTRACT IMAGES
             if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
 
-                #CREATE IMAGE FOLDER IF NOT EXISTS
+                # CREATE IMAGE FOLDER IF NOT EXISTS
                 if not os.path.isdir('images'):
                     os.mkdir('images')
 
@@ -74,4 +78,5 @@ def extract(filename, **kwargs):
 
 
 if __name__ == '__main__':
-    extract('test.pptx')
+    pptx_name = input('Enter pptx file name/full path (with ext): ')
+    extract(pptx_name)
